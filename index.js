@@ -33,10 +33,27 @@ async function run() {
     app.post('/brand', async(req, res) =>{
       const newBrand = req.body;
       console.log(newBrand)
-      const result = await brandCollection.insertOne(newBrand);
+      const result = await brandCollection.insertOne(newBrand); 
       res.send(result)
     })
-
+      app.get('/brand/samsung', async(req, res) =>{
+        const brand = 'Samsung';
+        const query = {brandName :brand}
+        const result = await brandCollection.find(query).toArray()
+        res.send(result)
+      })
+      app.get('/brand/apple', async(req, res) =>{
+        const brand = 'Apple';
+        const query = {brandName :brand}
+        const result = await brandCollection.find(query).toArray()
+        res.send(result)
+      })
+      app.get('/brand/macbook', async(req, res) =>{
+        const brand = 'Macbook';
+        const query = {brandName :brand}
+        const result = await brandCollection.find(query).toArray()
+        res.send(result)
+      })
 
     const userCollection = client.db("userDb").collection("users");
 
