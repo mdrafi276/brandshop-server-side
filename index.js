@@ -1,7 +1,7 @@
 const express = require('express')
 const cors = require('cors')
 const app = express()
-const { MongoClient, ServerApiVersion } = require('mongodb');
+const { MongoClient, ServerApiVersion, ObjectId } = require('mongodb');
 app.use(cors());
 app.use(express.json());
 const port = process.env.PORT || 5000;
@@ -17,7 +17,7 @@ const client = new MongoClient(uri, {
   serverApi: {
     version: ServerApiVersion.v1,
     strict: true,
-    deprecationErrors: true,
+    deprecationErrors: true, 
   }
 });
 
@@ -30,6 +30,7 @@ async function run() {
       const result = await cursor.toArray()
       res.send(result)
     })
+   
     app.post('/brand', async(req, res) =>{
       const newBrand = req.body;
       console.log(newBrand)
@@ -48,12 +49,60 @@ async function run() {
         const result = await brandCollection.find(query).toArray()
         res.send(result)
       })
-      app.get('/brand/macbook', async(req, res) =>{
-        const brand = 'Macbook';
+      app.get('/brand/sony', async(req, res) =>{
+        const brand = 'Sony';
         const query = {brandName :brand}
         const result = await brandCollection.find(query).toArray()
         res.send(result)
       })
+      app.get('/brand/google', async(req, res) =>{
+        const brand = 'Google';
+        const query = {brandName :brand}
+        const result = await brandCollection.find(query).toArray()
+        res.send(result)
+      })
+      app.get('/brand/lg', async(req, res) =>{
+        const brand = 'Lg';
+        const query = {brandName :brand}
+        const result = await brandCollection.find(query).toArray()
+        res.send(result)
+      })
+      app.get('/brand/microsoft', async(req, res) =>{
+        const brand = 'Microsoft';
+        const query = {brandName :brand}
+        const result = await brandCollection.find(query).toArray()
+        res.send(result)
+      })
+
+      //  update 
+    app.get('/brand/:id', async(req, res) =>{
+      const id = req.params.id;
+      const query = {_id: new ObjectId(id)}
+      const result = await brandCollection.findOne(query)
+      res.send(result)
+     
+    })
+   app.put('/brand/:id', async(req , res) => {
+    const id = req.params.id;
+    const product = req.body;
+      const filter = {_id: new ObjectId(id)}
+      const option = {upsert:true} ;
+      const updateProduct = {
+        $set:{
+      name:product.name,
+      type:product.type,
+      price:product.price,
+      photo:product.photo,
+      rating:product.rating,
+      brandName:product.brandName,
+      driscription:product.driscription,
+        }
+      }
+      const result = await brandCollection.updateOne(filter, updateProduct, option)
+      res.send(result)
+
+
+   })
 
     const userCollection = client.db("userDb").collection("users");
 
