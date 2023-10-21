@@ -24,6 +24,8 @@ const client = new MongoClient(uri, {
 async function run() {
   try {
     const brandCollection = client.db('brandDB').collection('brand');
+    const cartCollecton = client.db('brandDB').collection('cartCollecton');
+
     await client.connect();
     app.get('/brand', async(req, res) =>{
       const cursor = brandCollection.find();
@@ -35,6 +37,19 @@ async function run() {
       const newBrand = req.body;
       console.log(newBrand)
       const result = await brandCollection.insertOne(newBrand); 
+      res.send(result)
+    })
+    // cart colloctin 
+    app.post('/cart', async(req, res) =>{
+      const newBrand = req.body;
+      console.log(newBrand)
+      const result = await cartCollecton.insertOne(newBrand); 
+      res.send(result)
+    })
+    app.get('/cart/:id', async (req, res) => {
+      const email = req.params.id;
+      const query = {userEmail:email}
+      const result = await cartCollecton.find(query).toArray();
       res.send(result)
     })
       app.get('/brand/samsung', async(req, res) =>{
