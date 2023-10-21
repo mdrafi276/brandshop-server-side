@@ -52,6 +52,14 @@ async function run() {
       const result = await cartCollecton.find(query).toArray();
       res.send(result)
     })
+    app.delete('/data/:id', async (req, res) => {
+      const id  = req.params.id;
+     const query = {_id: new ObjectId(id)}
+      const result = await cartCollecton.deleteOne(query)
+      res.send(result)
+      console.log(id);
+    })
+    
       app.get('/brand/samsung', async(req, res) =>{
         const brand = 'Samsung';
         const query = {brandName :brand}
