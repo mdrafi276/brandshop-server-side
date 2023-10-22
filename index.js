@@ -26,7 +26,7 @@ async function run() {
     const brandCollection = client.db('brandDB').collection('brand');
     const cartCollecton = client.db('brandDB').collection('cartCollecton');
 
-    await client.connect();
+    // await client.connect();
     app.get('/brand', async(req, res) =>{
       const cursor = brandCollection.find();
       const result = await cursor.toArray()
@@ -54,7 +54,7 @@ async function run() {
     })
     app.delete('/data/:id', async (req, res) => {
       const id  = req.params.id;
-     const query = {_id: new ObjectId(id)}
+     const query = {_id: (id)}
       const result = await cartCollecton.deleteOne(query)
       res.send(result)
       console.log(id);
@@ -127,9 +127,9 @@ async function run() {
 
    })
 
-    const userCollection = client.db("userDb").collection("users");
+    // const userCollection = client.db("userDb").collection("users");
 
-    await client.db("admin").command({ ping: 1 });
+    // await client.db("admin").command({ ping: 1 });
     console.log("Pinged your deployment. You successfully connected to MongoDB!");
 
   } finally {
